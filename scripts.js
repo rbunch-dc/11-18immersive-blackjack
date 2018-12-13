@@ -8,6 +8,7 @@ let dealerHand = [];
 $('.deal-button').click(()=>{
     // console.log("User clicked on the deal button")
     // we need a deck!
+    theDeck = freshDeck.slice();
     // we have a deck. we need to shuffle it!
     shuffleDeck(theDeck);
     // We have a shuffled deck now. Give each player their cards
@@ -32,7 +33,27 @@ $('.deal-button').click(()=>{
     placeCard('dealer',1,dealerHand[0]);
     placeCard('player',2,playerHand[1]);
     placeCard('dealer',2,dealerHand[1]);
+    calculateTotal(playerHand,'player')
+    calculateTotal(dealerHand,'dealer')
 })
+
+function calculateTotal(hand, who){
+    // purpose:
+    // 1. Find out the number and return
+    // 2. Update the DOM with the right number for
+    // whoever's hand it is
+    let handTotal = 0;
+    // Loop through the hand
+    hand.forEach((card,i)=>{
+        // console.log(card);
+        // copy everything in the String, EXCEPT for the last
+        // char
+        let thisCardsValue = card.slice(0,-1);
+        handTotal += Number(thisCardsValue);
+    })
+    console.log(handTotal)
+
+}
 
 function placeCard(who,where,what){
     // who = ? ... option 1: 'player', option: 'dealer'
@@ -79,5 +100,5 @@ function shuffleDeck(aDeckToBeShuffled){
         aDeckToBeShuffled[rand1] = aDeckToBeShuffled[rand2]
         aDeckToBeShuffled[rand2] = card1Defender;
     }
-    console.log(aDeckToBeShuffled);
+    // console.log(aDeckToBeShuffled);
 }
