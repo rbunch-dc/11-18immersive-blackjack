@@ -1,12 +1,47 @@
+
 const freshDeck = createDeck();
 let theDeck = freshDeck.slice();
+let playerHand = [];
+let dealerHand = [];
+
 // blackjack deal function
 $('.deal-button').click(()=>{
     // console.log("User clicked on the deal button")
     // we need a deck!
     // we have a deck. we need to shuffle it!
     shuffleDeck(theDeck);
+    // We have a shuffled deck now. Give each player their cards
+    // playerHand.push(theDeck[0])
+    // shift pulls the first element off of the array
+    // and retuns it
+    // console.log(theDeck)
+    // get the first element off of the deck and put it in topCard
+    let topCard = theDeck.shift();
+    // put topCard in the playerHand array
+    playerHand.push(topCard)
+    // Take next card in deck
+    topCard = theDeck.shift();
+    // give the dealer the new topCar
+    dealerHand.push(topCard)
+    topCard = theDeck.shift();
+    playerHand.push(topCard)
+    topCard = theDeck.shift();
+    dealerHand.push(topCard)
+    // console.log(theDeck.length)
+    placeCard('player',1,playerHand[0])
+    placeCard('dealer',1,dealerHand[0])
+    placeCard('player',2,playerHand[1])
+    placeCard('dealer',2,dealerHand[1])
 })
+
+function placeCard(who,where,what){
+    // who = ? ... option 1: 'player', option: 'dealer'
+    // where = ? ... option 1-6
+    // what = ? ... 1h-13h, 1s-13s, 1d-13d, 1c-13c 
+    const classSelector = `.${who}-cards .card-${where}`;
+    $(classSelector).html(`<img src="/cards/${what}.png" />`)
+}
+
 
 function createDeck(){
     // I am a local variable. No one knows about this var, but me!
