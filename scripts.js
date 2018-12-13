@@ -37,6 +37,48 @@ $('.deal-button').click(()=>{
     calculateTotal(dealerHand,'dealer')
 })
 
+$('.hit-button').click(()=>{
+    // grab the next card in the deck 
+    const topCard = theDeck.shift();
+    // push it onto the players Hand
+    playerHand.push(topCard)
+    placeCard('player',playerHand.length,topCard);
+    calculateTotal(playerHand, 'player')
+})
+
+$('.stand-button').click(()=>{
+    // console.log("User stands!!")
+    // What happens to the players hand, when they stand?
+    // Nothing.
+    // Control passes to the dealer
+    // Rules for the dealer:
+    // 1. If I have less than 17, I MUST hit.
+    // 2. If I have 17 or more I CANNOT hit, even if it
+    // means I will lose
+    let dealersTotal = calculateTotal(dealerHand,'dealer');
+    while (dealersTotal < 17){
+        const topCard = theDeck.shift();
+        dealerHand.push(topCard);
+        placeCard('dealer',dealerHand.length,topCard);
+        dealersTotal = calculateTotal(dealerHand,'dealer');
+    }
+    checkWin();
+})
+
+function checkWin(){
+    const playerTotal = calculateTotal(playersHand,'player');
+    const dealersTotal = calculateTotal(dealersHand,'dealer');
+
+    // 1. If the player has > 21, player busts and loses.
+    // 2. If the dealer has > 21, dealer busts and loses.
+    // 3. If playersHand.length == 2 AND playerTotal == 21... BLACKJACK
+    // 4. If dealerHand.length == 2 AND dealersTotal == 21... BLACKJACK
+    // 5. If player > dealer, player wins
+    // 6. if dealer > player, dealer wins
+    // 7. else... push (tie)
+}
+
+
 function calculateTotal(hand, who){
     // purpose:
     // 1. Find out the number and return
@@ -49,9 +91,16 @@ function calculateTotal(hand, who){
         // copy everything in the String, EXCEPT for the last
         // char
         let thisCardsValue = card.slice(0,-1);
+        // handle J, Q, K
+        if(thisCardsValue > 10){
+            thisCardsValue = 10;
+        }
         handTotal += Number(thisCardsValue);
     })
     console.log(handTotal)
+    const classSelector = `.${who}-total`;
+    $(classSelector).html(handTotal);
+    return handTotal
 
 }
 
