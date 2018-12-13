@@ -18,20 +18,20 @@ $('.deal-button').click(()=>{
     // get the first element off of the deck and put it in topCard
     let topCard = theDeck.shift();
     // put topCard in the playerHand array
-    playerHand.push(topCard)
+    playerHand.push(topCard);
     // Take next card in deck
     topCard = theDeck.shift();
     // give the dealer the new topCar
-    dealerHand.push(topCard)
+    dealerHand.push(topCard);
     topCard = theDeck.shift();
-    playerHand.push(topCard)
+    playerHand.push(topCard);
     topCard = theDeck.shift();
-    dealerHand.push(topCard)
+    dealerHand.push(topCard);
     // console.log(theDeck.length)
-    placeCard('player',1,playerHand[0])
-    placeCard('dealer',1,dealerHand[0])
-    placeCard('player',2,playerHand[1])
-    placeCard('dealer',2,dealerHand[1])
+    placeCard('player',1,playerHand[0]);
+    placeCard('dealer',1,dealerHand[0]);
+    placeCard('player',2,playerHand[1]);
+    placeCard('dealer',2,dealerHand[1]);
 })
 
 function placeCard(who,where,what){
@@ -39,7 +39,7 @@ function placeCard(who,where,what){
     // where = ? ... option 1-6
     // what = ? ... 1h-13h, 1s-13s, 1d-13d, 1c-13c 
     const classSelector = `.${who}-cards .card-${where}`;
-    $(classSelector).html(`<img src="/cards/${what}.png" />`)
+    $(classSelector).html(`<img src="/cards/${what}.png" />`);
 }
 
 
@@ -56,7 +56,7 @@ function createDeck(){
     suits.forEach((s,index)=>{
         // inner loop for card value
         for(let c = 1; c <= 13; c++){
-            newDeck.push(`${c}${s}`)
+            newDeck.push(`${c}${s}`);
         }
     })
     // console.log(newDeck)
@@ -79,5 +79,5 @@ function shuffleDeck(aDeckToBeShuffled){
         aDeckToBeShuffled[rand1] = aDeckToBeShuffled[rand2]
         aDeckToBeShuffled[rand2] = card1Defender;
     }
-    console.log(aDeckToBeShuffled)
+    console.log(aDeckToBeShuffled);
 }
