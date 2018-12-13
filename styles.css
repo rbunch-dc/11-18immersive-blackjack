@@ -6,3 +6,13 @@
     margin: 50px auto;
     max-width: 800px;
 }
+
+.card{
+    width: 100px;
+    padding: 10px;
+    background-color: white;
+    display: inline-block;
+}
+.card img{
+    /* width: 100% */
+}
