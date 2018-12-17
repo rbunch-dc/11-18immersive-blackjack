@@ -1,14 +1,36 @@
 
 const freshDeck = createDeck();
+// we need to use slice, or we will 
+// copy the pointer/reference to the 
+// Array, and we will change the 
+// original deck
 let theDeck = freshDeck.slice();
 let playerHand = [];
 let dealerHand = [];
+let playerScore = 0;
+let dealerScore = 0;
+// let score = {
+//     player: 0,
+//     dealer: 0,
+// }
+let chips = {
+    ones: 0,
+    fives: 0,
+    tf: 0,
+}
 
 // blackjack deal function
 $('.deal-button').click(()=>{
     // console.log("User clicked on the deal button")
     // we need a deck!
+
+    // clear out the old cards 
+    $('.card').html('');
+    playerHand = [];
+    dealerHand = [];
+
     theDeck = freshDeck.slice();
+    // theDeck = freshDeck
     // we have a deck. we need to shuffle it!
     shuffleDeck(theDeck);
     // We have a shuffled deck now. Give each player their cards
@@ -70,8 +92,11 @@ function checkWin(){
     const dealersTotal = calculateTotal(dealersHand,'dealer');
 
     // 1. If the player has > 21, player busts and loses.
+    // dealerScore++
     // 2. If the dealer has > 21, dealer busts and loses.
+    // playerScore++
     // 3. If playersHand.length == 2 AND playerTotal == 21... BLACKJACK
+    // playerScore+=2
     // 4. If dealerHand.length == 2 AND dealersTotal == 21... BLACKJACK
     // 5. If player > dealer, player wins
     // 6. if dealer > player, dealer wins
@@ -85,18 +110,44 @@ function calculateTotal(hand, who){
     // 2. Update the DOM with the right number for
     // whoever's hand it is
     let handTotal = 0;
+    // init bool for whether this hand has an ace or not
+    let numAces = 0;
+    let hasAce = false;
     // Loop through the hand
     hand.forEach((card,i)=>{
         // console.log(card);
         // copy everything in the String, EXCEPT for the last
-        // char
+        // char 
+        // 1h
+        // 5s
+        // 12d
+        // 13c
+        // 1h, 13k - SHOULD = 21, or BLACKJACK!
         let thisCardsValue = card.slice(0,-1);
-        // handle J, Q, K
+        // handle J, Q, K, & A
         if(thisCardsValue > 10){
-            thisCardsValue = 10;
+            thisCardsValue = 10; 
+        }else if(thisCardsValue == 1){
+            // this is an ACE!!
+            // flip our boolean
+            hasAce = true;
+            // numAces++;
+            // thisCardsValue = 11;
         }
         handTotal += Number(thisCardsValue);
     })
+    // Done looping. We have their total hand, with all aces
+    // as 11, and all face card as 10.
+    // How many aces should we bother reduce down to a 1?
+    if(hasAce & handTotal <= 10){
+        // add 10 one time
+        handTotal += 10;
+        // start remove 10 for each ace
+        // for(let i = 0; i < numAces; i++){
+
+        // }
+    }
+    
     console.log(handTotal)
     const classSelector = `.${who}-total`;
     $(classSelector).html(handTotal);
@@ -109,7 +160,7 @@ function placeCard(who,where,what){
     // where = ? ... option 1-6
     // what = ? ... 1h-13h, 1s-13s, 1d-13d, 1c-13c 
     const classSelector = `.${who}-cards .card-${where}`;
-    $(classSelector).html(`<img src="/cards/${what}.png" />`);
+    $(classSelector).html(`<img src="./cards/${what}.png" />`);
 }
 
 
@@ -138,7 +189,7 @@ function shuffleDeck(aDeckToBeShuffled){
     // funny noises.
     // When the loop (lots of times) is document, the array 
     // (deck) will be shuffled
-    for(let i = 0; i < 100000; i++){
+    for(let i = 0; i < 1000000; i++){
         let rand1 = Math.floor(Math.random() * 52);
         let rand2 = Math.floor(Math.random() * 52);
         // we need to switch aDeckToBeShuffled[rand1] with
